@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .image-container {
+            flex: 1;
+        }
+        .image-container img {
+            max-width: 70%;
+            height: auto;
+        }
+        .form-container {
+            flex: 1;
+            max-width: 400px;
+        }
+    </style>
+    <script>
+        // validateUsername 함수 정의
+        function validateUsername() {
+            const userIdField = document.getElementById("userId");
+            const userId = userIdField.value;
+            const regex = /^[a-zA-Z0-9]+$/; // 영어와 숫자만 허용
+            const message = document.getElementById("userIdError");
+
+            if (!regex.test(userId)) {
+                message.style.display = "block";
+                userIdField.classList.add("is-invalid");
+            } else {
+                message.style.display = "none";
+                userIdField.classList.remove("is-invalid");
+            }
+        }
+
+        // validatePhoneNumber 함수 정의
+        function validatePhoneNumber(event) {
+            const input = event.target;
+            input.value = input.value.replace(/[^0-9]/g, ''); // 숫자 이외의 값 제거
+        }
+
+        // validatePasswordMatch 함수 정의
+        function validatePasswordMatch() {
+            const passwordField = document.getElementById("password");
+            const confirmPasswordField = document.getElementById("confirmPassword");
+            const message = document.getElementById("passwordError");
+
+            if (passwordField.value !== confirmPasswordField.value) {
+                message.style.display = "block"; // 비밀번호 불일치 에러 표시
+                confirmPasswordField.classList.add("is-invalid");
+            } else {
+                message.style.display = "none"; // 에러 숨기기
+                confirmPasswordField.classList.remove("is-invalid");
+            }
+        }
+
+        // 최종 폼 검증
+        function validateForm(event) {
+            validatePasswordMatch(); // 비밀번호 일치 확인
+            const errors = document.querySelectorAll(".is-invalid"); //전체 에러를 확인
+            if (errors.length > 0) {
+                event.preventDefault(); // 폼 제출 중단
+                alert("입력값을 확인해주세요.");
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <!-- 이미지 섹션 -->
+    <div class="image-container">
+        <img th:src="@{/images/store2.jpg}" alt="Store Image">
+    </div>
+    <!-- 회원가입 폼 섹션 -->
+    <div class="form-container">
+        <h2 class="text-center">회원가입</h2>
+        <form th:action="@{/register}" th:object="${userDto}" method="post" onsubmit="validateForm(event)">
+            <div class="mb-3">
+                <label for="userId" class="form-label">아이디 (영어와 숫자만 입력 가능)</label>
+                <input type="text" class="form-control" id="userId" name="userId" th:field="*{userId}" required oninput="validateUsername()">
+                <div id="userIdError" class="invalid-feedback" style="display: none;">아이디는 영어와 숫자만 입력 가능합니다.</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">비밀번호</label>
+                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">비밀번호 확인</label>
+                <input type="password" class="form-control" id="confirmPassword" required oninput="validatePasswordMatch()">
+                <div id="passwordError" class="invalid-feedback" style="display: none;">비밀번호가 일치하지 않습니다.</div>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">이름</label>
+                <input type="text" class="form-control" id="username" name="username" th:field="*{username}" required>
+            </div>
+            <div class="mb-3">
+                <label for="branch" class="form-label">지점</label>
+                <select class="form-select" id="branch" name="branch" th:field="*{branch}" required>
+                    <option value="" disabled selected>지점을 선택하세요</option>
+                    <option value="안양">안양</option>
+                    <option value="청주">청주</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">이메일</label>
+                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
+            </div>
+            <div class="mb-3">
+                <label for="phoneNumber" class="form-label">핸드폰 번호</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" required oninput="validatePhoneNumber(event)">
+                <small class="text-muted">'-' 없이 숫자만 입력해주세요.</small>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">회원가입</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

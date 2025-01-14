@@ -1,0 +1,32 @@
+#spring.application.name=SHProject
+#
+#spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+#spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+#spring.datasource.username=c##shadmin
+#spring.datasource.password=1234
+#
+#
+#
+#spring.jpa.hibernate.ddl-auto=create
+#spring.jpa.properties.hibernate.format_sql=true
+#spring.jpa.show-sql=true
+##spring.jpa.database-platform=org.hibernate.dialect.Oracle12cDialect
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/conveniencestore?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        highlight_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+
