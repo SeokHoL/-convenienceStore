@@ -18,7 +18,7 @@ public class AdminAccountInitializer {
                 User admin = User.builder()
                         .userId("admin")
                         .username("이대표")
-                        .email("admin@example.com")
+                        .email("admin@saehimit.com")
                         .phoneNumber("01012345678")
                         .password(passwordEncoder.encode("admin123")) // 암호화된 비밀번호
                         .role("ROLE_ADMIN") // 관리자 역할

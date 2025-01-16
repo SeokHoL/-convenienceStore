@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,50 +16,52 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User {
 
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid; // 식별자
 
-    @Column(nullable = false, length = 100, unique = true)
-    private String userId; // 사용자가 입력하는 아이디
-
+    @Column(name = "user_id", nullable = false, length = 100, unique = true)
+    private String userId;
 
     @Column(nullable = false, length = 100, unique = true)
     private String username;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false, length = 100)
     private String password;
+
+    @Column(nullable = false)
+    private String role; // 권한 ("ROLE_ADMIN", "ROLE_USER", "ROLE_MANAGER")
 
     @Column(nullable = false, length = 100, unique = true)
     private String email;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false, length = 100)
     private String branch;
 
     @Column(nullable = false)
     private String phoneNumber;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
     @Column(nullable = false)
-    private String role = "ROLE_USER"; // 기본값: 일반 사용자
+    private LocalDate joinDate; // 입사일자
 
-    // 객체 생성 시 자동으로 createdAt 값 설정
+    @Column(nullable = true)
+    private LocalDate leaveDate; // 퇴사일자
+
+    @Column(nullable = true)
+    private int loginFailCount;
+
+    @Column(nullable = true)
+    private LocalDate modifiedAt; // 수정 일시
+
+    @Column(nullable = true, length = 100)
+    private String modifiedBy; // 수정자
+
     @PrePersist
     public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @Builder
-    public User(String userId, String username, String password, String email, String branch, String phoneNumber) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.branch = branch;
-        this.phoneNumber = phoneNumber;
-        this.createdAt = LocalDateTime.now(); // Builder를 통한 객체 생성 시에도 createdAt 설정
+        if (this.joinDate == null) {
+            this.joinDate = LocalDate.now();
+        }
     }
 }

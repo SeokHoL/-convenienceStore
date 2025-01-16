@@ -23,7 +23,7 @@ public class MiscOutbound {
     private String description; // 기타 출고 설명
 
     @Column(nullable = false)
-    private int quantity; // 수량
+    private Long quantity; // 수량
 
     @Column(nullable = false)
     private LocalDateTime outboundDate; // 출고 날짜

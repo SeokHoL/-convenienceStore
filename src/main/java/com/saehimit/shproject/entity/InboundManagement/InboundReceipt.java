@@ -24,7 +24,7 @@ public class InboundReceipt {
     private String productType; // 품목 타입
 
     @Column(nullable = false)
-    private int receivedQuantity; // 입고 수량
+    private Long receivedQuantity; // 입고 수량
 
     @Column(nullable = false)
     private LocalDateTime receivedDate; // 입고 날짜

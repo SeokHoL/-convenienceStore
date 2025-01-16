@@ -24,7 +24,7 @@ public class MiscInbound {
     private String description; // 기타 입고 설명
 
     @Column(nullable = false)
-    private int quantity; // 수량
+    private Long quantity; // 수량
 
     @Column(nullable = false)
     private LocalDateTime inboundDate; // 입고 날짜

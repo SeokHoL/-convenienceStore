@@ -32,6 +32,17 @@
             text-decoration: underline;
         }
     </style>
+    <script>
+        // 서버에서 전달된 에러 메시지를 처리하는 함수
+        function handleErrorMessage() {
+            const errorMessage = [[${error}]]; // 서버에서 전달된 에러 메시지
+            if (errorMessage) {
+                alert(errorMessage); // 알림창으로 에러 메시지 표시
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", handleErrorMessage);
+    </script>
 </head>
 <body>
 <div class="container">
@@ -42,6 +53,10 @@
     <!-- 로그인 폼 섹션 -->
     <div class="form-container">
         <h2 class="text-center">로그인</h2>
+        <!-- 에러 메시지 표시 -->
+        <div th:if="${error}" class="alert alert-danger text-center" role="alert">
+            <span th:text="${error}"></span>
+        </div>
         <form th:action="@{/login}" method="post">
             <div class="mb-3">
                 <label for="userId" class="form-label">아이디</label>
@@ -53,9 +68,9 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">로그인</button>
         </form>
+    </div>
 
-
-        <a th:href="@{/register}" class="register-link">회원가입이 필요하신가요?</a>
+        <!--<a th:href="@{/register}" class="register-link">회원가입이 필요하신가요?</a>-->
     </div>
 </div>
 </body>
