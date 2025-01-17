@@ -47,7 +47,6 @@ public class UserService {
 
         public void saveUser(UserDto userDto) {
 
-
             User user = User.builder()
                     .userId(userDto.getUserId())
                     .username(userDto.getUsername())

@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -16,8 +15,6 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid; // 식별자
@@ -25,7 +22,7 @@ public class User {
     @Column(name = "user_id", nullable = false, length = 100, unique = true)
     private String userId;
 
-    @Column(nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 100)
     private String username;
 
     @Column(nullable = false, length = 100)
@@ -49,8 +46,11 @@ public class User {
     @Column(nullable = true)
     private LocalDate leaveDate; // 퇴사일자
 
-    @Column(nullable = true)
-    private int loginFailCount;
+    private boolean accountLocked = false;
+
+
+    @Column(nullable = false)
+    private int loginFailCount = 0; // 로그인 실패 횟수
 
     @Column(nullable = true)
     private LocalDate modifiedAt; // 수정 일시
@@ -63,5 +63,8 @@ public class User {
         if (this.joinDate == null) {
             this.joinDate = LocalDate.now();
         }
+
     }
+
+
 }

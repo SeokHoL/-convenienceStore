@@ -183,14 +183,14 @@
 <!--                        </div>-->
                     </div>
 
-
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">수정 완료</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    </div>
 
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">수정 완료</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-            </div>
+
         </div>
     </div>
 </div>
@@ -213,13 +213,13 @@
 
         const userId = checkboxes[0].value;
 
-        // 서버에서 사용자 정보를 가져와 모달에 채우기
         fetch(`/user/${userId}`)
             .then(response => {
                 if (!response.ok) throw new Error('사용자 정보를 가져올 수 없습니다.');
                 return response.json();
             })
             .then(user => {
+                // 모달 필드에 데이터 설정
                 document.getElementById('modalUserId').value = user.userId;
                 document.getElementById('modalUsername').value = user.username;
                 document.getElementById('modalRole').value = user.role;
@@ -228,8 +228,7 @@
                 document.getElementById('modalPhoneNumber').value = user.phoneNumber;
                 document.getElementById('modalJoinDate').value = user.joinDate;
                 document.getElementById('modalLeaveDate').value = user.leaveDate || '';
-                document.getElementById('modalModifiedAt').value = new Date().toISOString().split('T')[0]; // 날짜만 설정
-                // document.getElementById('modalModifiedBy').value = user.userId; // 수정자 자동 설정
+                document.getElementById('modalModifiedAt').value = new Date().toISOString().split('T')[0];
 
                 // 모달 열기
                 const modal = new bootstrap.Modal(document.getElementById('editModal'));
@@ -240,6 +239,7 @@
                 alert('사용자 정보를 가져오는 중 오류가 발생했습니다.');
             });
     }
+
 
 
 

@@ -23,11 +23,15 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // 커스텀 로그인 페이지
-                        .failureUrl("/login?error=true") // 로그인 실패 시 리다이렉트
-                        .defaultSuccessUrl("/main", true) // 성공 시 리다이렉트
+                        .loginPage("/login")
+                        .failureHandler((request, response, exception) -> {
+                            String userId = request.getParameter("username");
+                            response.sendRedirect("/login?error=true&userId=" + userId);
+                        })
+                        .defaultSuccessUrl("/main", true)
                         .permitAll()
                 )
+
 
                 .logout(logout -> logout
                         .logoutUrl("/logout") // 로그아웃 경로

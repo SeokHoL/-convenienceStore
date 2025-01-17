@@ -1,6 +1,8 @@
 package com.saehimit.shproject.controller;
 
 import com.saehimit.shproject.dto.UserDto;
+import com.saehimit.shproject.entity.User;
+import com.saehimit.shproject.repository.UserRepository;
 import com.saehimit.shproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +26,26 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
-    public String showLoginForm(@RequestParam(value = "error", required = false) String error, Model model) {
+    public String showLoginForm(@RequestParam(value = "error", required = false) String error,
+                                @RequestParam(value = "userId", required = false) String userId,
+                                Model model) {
         if (error != null) {
-            model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+            String errorMessage = "아이디 또는 비밀번호가 잘못되었습니다.";
+            if (userId != null) {
+                User user = userRepository.findByUserId(userId).orElse(null);
+                if (user != null) {
+                    if (user.isAccountLocked()) {
+                        errorMessage = "계정이 잠겼습니다. 관리자에게 문의하세요.";
+                    } else {
+                        errorMessage += " (실패 횟수: " + user.getLoginFailCount() + ")";
+                    }
+                }
+            }
+            model.addAttribute("error", errorMessage);
         }
         return "login";
     }
@@ -77,7 +93,7 @@ public class UserController {
         model.addAttribute("users", null);
         return "user_search"; // 검색 페이지
     }
-    
+
     //사용자 정보 조회 (post)
     @PostMapping("/user/search")
     public String searchUsers(
